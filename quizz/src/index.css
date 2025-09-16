@@ -23,3 +23,10 @@ body {
   border-radius: 6px;
   cursor: pointer;
 }
+li.correct {
+  background: #c8e6c9; /* green */
+}
+
+li.wrong {
+  background: #ffcdd2; /* red */
+}

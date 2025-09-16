@@ -15,32 +15,38 @@ function App() {
     }
   ];
 
-  // ✅ React State
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [score, setScore] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [isAnswered, setIsAnswered] = useState(false);
 
-  const [currentQuestion, setCurrentQuestion] = useState(0)
-  const [ score, setScore] = useState(0);
+  // When user selects an answer
+  const handleAnswer = (answer) => {
+    setSelectedAnswer(answer);
+    setIsAnswered(true);
 
-  const handle_answer = answer => {
-    if(answer === questions[currentQuestion].correct){
+    if (answer === questions[currentQuestion].correct) {
       setScore(score + 1);
     }
-    setCurrentQuestion(currentQuestion + 1);
-
   };
 
-  if ( currentQuestion >= questions.length){
+  // Move to next question
+  const handleNext = () => {
+    setCurrentQuestion(currentQuestion + 1);
+    setSelectedAnswer(null);
+    setIsAnswered(false);
+  };
+
+  // Quiz finished
+  if (currentQuestion >= questions.length) {
     return (
       <div>
-        <h1>
-          quizz done !!;
-          
-        </h1>
-        <p>
-          Your score: {score}/ {questions.length}
-        </p>
+        <h1>Quiz Finished 🎉</h1>
+        <p>Your score: {score} / {questions.length}</p>
       </div>
-    )
+    );
   }
+
   return (
     <div>
       <h1>🚀 React Quiz App</h1>
@@ -49,10 +55,16 @@ function App() {
       <QuestionCard
         question={questions[currentQuestion].question}
         options={questions[currentQuestion].options}
-        onAnswer={handle_answer}
+        correct={questions[currentQuestion].correct}
+        selectedAnswer={selectedAnswer}
+        onAnswer={handleAnswer}
       />
+
+      {isAnswered && (
+        <button onClick={handleNext}>Next Question ➡️</button>
+      )}
     </div>
-  ); 
+  );
 }
 
 export default App;
